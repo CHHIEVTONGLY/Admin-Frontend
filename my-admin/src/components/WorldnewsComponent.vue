@@ -119,7 +119,6 @@ export default {
           process.env.VUE_APP_API_URL + "api/users/worldnews-admin"
         );
         this.worldnewsData = localResponse.data;
-        console.log(this.worldnewsData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

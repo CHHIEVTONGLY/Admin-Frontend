@@ -128,7 +128,7 @@
     >
       <form action="#">
         <button
-          type="submit"
+          @click="logout"
           class="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
         >
           <svg
@@ -158,5 +158,12 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    logout() {
+      console.log(localStorage.getItem("token"));
+      localStorage.removeItem("token");
+    },
+  },
+};
 </script>

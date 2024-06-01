@@ -120,7 +120,6 @@ export default {
           process.env.VUE_APP_API_URL + "api/users/localnews-admin"
         );
         this.localnewsData = localResponse.data;
-        console.log(this.localnewsData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

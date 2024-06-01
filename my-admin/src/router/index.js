@@ -16,6 +16,7 @@ const routes = [
     path: "/dashboard",
     name: "Dashboard",
     component: DashboardView,
+    meta: { requiresAuth: true },
     children: [
       {
         path: "register",
@@ -31,7 +32,7 @@ const routes = [
         path: "worldnews",
         name: "WorldnewsDashboard",
         component: WorldnewsComponent,
-      }
+      },
     ],
   },
 ];
@@ -39,6 +40,16 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = localStorage.getItem("token");
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+
+  if (requiresAuth && !isAuthenticated) {
+    next("/");
+  } else {
+    next();
+  }
 });
 
 export default router;
