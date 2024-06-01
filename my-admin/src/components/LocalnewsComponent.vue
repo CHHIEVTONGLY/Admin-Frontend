@@ -44,6 +44,71 @@
                   Search
                 </span>
               </button>
+              <!-- Dropdown -->
+              <div
+                @mouseenter="toggleStatus(false)"
+                @mouseleave="toggleStatus(true)"
+                class="relative"
+              >
+                <div
+                  class="inline-flex items-center overflow-hidden rounded-md border bg-white"
+                >
+                  <h1
+                    class="border-e px-4 py-2 text-sm/none text-gray-600 hover:bg-gray-50 hover:text-gray-700"
+                  >
+                    Sort by
+                  </h1>
+
+                  <button
+                    class="h-full p-2 text-gray-600 hover:bg-gray-50 hover:text-gray-700"
+                  >
+                    <span class="sr-only">Menu</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-4 w-4"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </div>
+
+                <div
+                  class="absolute end-0 z-10 mt-2 w-56 rounded-md border border-gray-100 bg-white shadow-lg"
+                  role="menu"
+                  :class="{ hidden: !statusShow, hidden: statusShow }"
+                >
+                  <div class="p-2">
+                    <!-- Popular sort -->
+                    <div
+                      class="hover:bg-gray-50 cursor-pointer"
+                      @click="sortPopular"
+                    >
+                      <h1
+                        class="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                        role="menuitem"
+                      >
+                        Popular
+                      </h1>
+                    </div>
+
+                    <!-- Recently sort -->
+                    <div class="hover:bg-gray-50 cursor-pointer">
+                      <h1
+                        class="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                        role="menuitem"
+                      >
+                        Recently
+                      </h1>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -56,7 +121,7 @@
             <tr>
               <th scope="col" class="p-4">Title</th>
               <th scope="col" class="px-6 py-3">Date</th>
-              <th scope="col" class="px-6 py-3">Category</th>
+              <th scope="col" class="px-6 py-3">View</th>
               <th scope="col" class="px-6 py-3">Update</th>
               <th scope="col" class="px-6 py-3">Delete</th>
             </tr>
@@ -75,8 +140,8 @@
                 <!-- title -->
                 {{ limitLength(x.title, 40) }}
               </th>
-              <td class="px-6 py-4">{{ x.time }}</td>
-              <td class="px-6 py-4">Local</td>
+              <td class="px-6 py-4">{{ x.date }}</td>
+              <td class="px-6 py-4">{{ x.view }}</td>
               <td class="px-6 py-4">
                 <button
                   class="font-medium text-yellow-400 dark:text-yellow-500 hover:underline"
@@ -86,6 +151,7 @@
               </td>
               <td class="px-6 py-4">
                 <button
+                  @click="deleteLocalnews(x._id)"
                   class="font-medium text-red-600 dark:text-red-500 hover:underline"
                 >
                   Delete
@@ -95,6 +161,62 @@
             <!-- More table rows -->
           </tbody>
         </table>
+      </div>
+      <div
+        v-if="showSuccessPopup"
+        class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50"
+      >
+        <div class="bg-white rounded-xl shadow-md p-6">
+          <!-- Popup content -->
+          <div role="alert">
+            <div class="flex items-start gap-4">
+              <span class="text-green-600">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="h-6 w-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </span>
+              <div class="flex-1">
+                <strong class="block font-medium text-gray-900">
+                  Delete successfully
+                </strong>
+                <p class="mt-1 text-sm text-gray-700">
+                  Your data has been deleted.
+                </p>
+              </div>
+              <button
+                @click="dismissPopup"
+                class="text-gray-500 transition hover:text-gray-600"
+              >
+                <span class="sr-only">Dismiss popup</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="h-6 w-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -108,6 +230,8 @@ export default {
       localnewsData: [],
       query: "",
       searchData: [],
+      showSuccessPopup: false,
+      statusShow: true,
     };
   },
   mounted() {
@@ -142,6 +266,43 @@ export default {
       } catch (error) {
         console.error("Error searching:", error);
       }
+    },
+
+    async deleteLocalnews(id) {
+      try {
+        console.log(id);
+        await axios.delete(
+          process.env.VUE_APP_API_URL + `api/users/local-remove/${id}`,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+
+        // Set timeout when delete sucessfully it'll reload the page for 4seconds
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 4000);
+      } catch (error) {
+        console.error("Error searching:", error);
+      }
+    },
+
+    async sortPopular() {
+      try {
+        const response = await axios.get(
+          process.env.VUE_APP_API_URL + "api/localnews/popular/sort"
+        );
+        this.localnewsData = response.data;
+      } catch (error) {
+        console.error("Error");
+      }
+    },
+
+    toggleStatus(isShow) {
+      this.statusShow = isShow;
     },
   },
 };

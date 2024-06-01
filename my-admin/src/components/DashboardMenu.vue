@@ -45,6 +45,31 @@
           </div>
 
           <ul class="space-y-1 border-t border-gray-100 pt-4">
+            <li >
+              <router-link
+                class="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-blue-500 hover:text-white"
+                to="#"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1.2rem"
+                  height="1.2rem"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M11.5 19v-8.65l-2.33 2.33l-.708-.718L12 8.423l3.539 3.539l-.708.719L12.5 10.35V19zM5 9.039V6.616q0-.691.463-1.153T6.616 5h10.769q.69 0 1.153.463T19 6.616v2.423h-1V6.616q0-.231-.192-.424T17.384 6H6.616q-.231 0-.424.192T6 6.616v2.423z"
+                  />
+                </svg>
+
+                <span
+                  class="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
+                >
+                  Publish
+                </span>
+              </router-link>
+            </li>
+            <!-- Local news router -->
             <li>
               <router-link
                 class="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
@@ -68,6 +93,7 @@
                 </span>
               </router-link>
             </li>
+            <!-- World news router -->
             <li>
               <router-link
                 class="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
@@ -90,33 +116,6 @@
                   Worldnews
                 </span>
               </router-link>
-            </li>
-            <li>
-              <a
-                href="#"
-                class="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="size-5 opacity-75"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                  />
-                </svg>
-
-                <span
-                  class="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
-                >
-                  Account
-                </span>
-              </a>
             </li>
           </ul>
         </div>
