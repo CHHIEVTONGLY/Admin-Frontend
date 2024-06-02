@@ -13,7 +13,7 @@
         <div class="px-2">
           <div class="py-4">
             <a
-              href="#"
+              href="/dashboard"
               class="t group relative flex justify-center rounded bg-blue-50 px-2 py-1.5 text-blue-700"
             >
               <svg
@@ -48,7 +48,7 @@
             <li >
               <router-link
                 class="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-blue-500 hover:text-white"
-                to="#"
+                to="/dashboard/publish"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

@@ -243,7 +243,7 @@
               />
             </div>
             <div class="text-green-400 mt-2">
-              <h1 >{{ updateMessage }}</h1>
+              <h1>{{ updateMessage }}</h1>
             </div>
             <!-- Update btn -->
             <button
@@ -376,7 +376,12 @@ export default {
         await axios.put(
           process.env.VUE_APP_API_URL +
             `api/users/local-update/${this.updateDataId}`,
-          updateDataRequest
+          updateDataRequest,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
         );
         this.updateMessage = "News updated successfully!";
         setTimeout(() => {

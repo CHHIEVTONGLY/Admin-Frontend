@@ -4,6 +4,7 @@ import RegisterPage from "../views/RegisterPage.vue";
 import DashboardView from "../views/DashboardView.vue";
 import LocalnewsComponent from "../components/LocalnewsComponent.vue";
 import WorldnewsComponent from "../components/WorldnewsComponent.vue";
+import PublishPageView from "@/views/PublishPageView.vue";
 
 const routes = [
   {
@@ -33,6 +34,11 @@ const routes = [
         name: "WorldnewsDashboard",
         component: WorldnewsComponent,
       },
+      {
+        path : "publish",
+        name: "Publish",
+        component: PublishPageView,
+      }
     ],
   },
 ];
