@@ -98,7 +98,10 @@
                     </div>
 
                     <!-- Recently sort -->
-                    <div class="hover:bg-gray-50 cursor-pointer">
+                    <div
+                      class="hover:bg-gray-50 cursor-pointer"
+                      @click="sortDate"
+                    >
                       <h1
                         class="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
                         role="menuitem"
@@ -144,6 +147,7 @@
               <td class="px-6 py-4">{{ x.view }}</td>
               <td class="px-6 py-4">
                 <button
+                @click="getUpdateDataId(x._id)"
                   class="font-medium text-yellow-400 dark:text-yellow-500 hover:underline"
                 >
                   Update
@@ -166,55 +170,89 @@
         v-if="showSuccessPopup"
         class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50"
       >
-        <div class="bg-white rounded-xl shadow-md p-6">
-          <!-- Popup content -->
-          <div role="alert">
-            <div class="flex items-start gap-4">
-              <span class="text-green-600">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="h-6 w-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </span>
-              <div class="flex-1">
-                <strong class="block font-medium text-gray-900">
-                  Delete successfully
-                </strong>
-                <p class="mt-1 text-sm text-gray-700">
-                  Your data has been deleted.
-                </p>
-              </div>
+        <popup-delete></popup-delete>
+      </div>
+      <div
+        v-if="showUpdatePopup"
+        class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50"
+      >
+        <div
+          class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50"
+        >
+          <div class="bg-white rounded-xl shadow-md p-6 w-96">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-xl font-semibold">Update Local News</h2>
+              <!-- Close btn -->
               <button
-                @click="dismissPopup"
-                class="text-gray-500 transition hover:text-gray-600"
+                @click="closeUpdatePopup"
+                class="text-gray-400 hover:text-gray-600"
               >
-                <span class="sr-only">Dismiss popup</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke-width="1.5"
                   stroke="currentColor"
-                  class="h-6 w-6"
                 >
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
+                    stroke-width="2"
                     d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
               </button>
             </div>
+            <div>
+              <label
+                for="img-url"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Image URL</label
+              >
+              <input
+                v-model="imgUrl"
+                type="text"
+                id="img-url"
+                class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+            </div>
+            <div class="mt-4">
+              <label
+                for="title"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Title</label
+              >
+              <input
+                v-model="title"
+                type="text"
+                id="title"
+                class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+            </div>
+            <div class="mt-4">
+              <label
+                for="paragraph"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Paragraph</label
+              >
+              <input
+                v-model="paragraph"
+                type="text"
+                id="paragraph"
+                class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+            </div>
+            <div class="text-green-400 mt-2">
+              <h1 >{{ updateMessage }}</h1>
+            </div>
+            <!-- Update btn -->
+            <button
+              @click="updateData"
+              type="button"
+              class="mt-4 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Update
+            </button>
           </div>
         </div>
       </div>
@@ -224,13 +262,21 @@
 
 <script>
 import axios from "axios";
+import PopupDelete from "./PopupDelete.vue";
 export default {
+  components: { PopupDelete },
   data() {
     return {
       worldnewsData: [],
       query: "",
       showSuccessPopup: false,
+      showUpdatePopup: false,
       statusShow: true,
+      imgUrl: "",
+      title: "",
+      paragraph: "",
+      updateMessage: "",
+      updateDataID: "",
     };
   },
   mounted() {
@@ -297,6 +343,45 @@ export default {
         this.worldnewsData = response.data;
       } catch (error) {
         console.error("Error");
+      }
+    },
+    async sortDate() {
+      try {
+        const response = await axios.get(
+          process.env.VUE_APP_API_URL + "api/worldnews/date/sort"
+        );
+        this.worldnewsData = response.data;
+      } catch (error) {
+        console.error("Error");
+      }
+    },
+
+    getUpdateDataId(id) {
+      this.showUpdatePopup = true;
+      this.updateDataId = id; // Store the ID in data property
+    },
+    closeUpdatePopup() {
+      this.showUpdatePopup = !this.showUpdatePopup;
+    },
+    async updateData() {
+      const updateDataRequest = {};
+      if (this.imgUrl) updateDataRequest.imgUrl = this.imgUrl;
+      if (this.title) updateDataRequest.title = this.title;
+      if (this.paragraph) updateDataRequest.paragraph = this.paragraph;
+
+      try {
+        await axios.put(
+          process.env.VUE_APP_API_URL +
+            `api/users/world-update/${this.updateDataId}`,
+          updateDataRequest
+        );
+        this.updateMessage = "News updated successfully!";
+        setTimeout(() => {
+          window.location.reload();
+        }, 4000);
+      } catch (error) {
+        console.error("Error updating news:", error);
+        this.updateMessage = "Error updating news. Please try again.";
       }
     },
     toggleStatus(isShow) {
