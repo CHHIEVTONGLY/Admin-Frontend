@@ -124,7 +124,7 @@
             <tr>
               <th scope="col" class="p-4">Title</th>
               <th scope="col" class="px-6 py-3">Date</th>
-              <th scope="col" class="px-6 py-3">Category</th>
+              <th scope="col" class="px-6 py-3">View</th>
               <th scope="col" class="px-6 py-3">Update</th>
               <th scope="col" class="px-6 py-3">Delete</th>
             </tr>
@@ -181,7 +181,7 @@
         >
           <div class="bg-white rounded-xl shadow-md p-6 w-96">
             <div class="flex justify-between items-center mb-4">
-              <h2 class="text-xl font-semibold">Update Local News</h2>
+              <h2 class="text-xl font-semibold">Update World News</h2>
               <!-- Close btn -->
               <button
                 @click="closeUpdatePopup"
@@ -207,7 +207,7 @@
               <label
                 for="img-url"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Image URL</label
+                >Image URLs <span class="text-gray-400">(Optional)</span></label
               >
               <input
                 v-model="imgUrl"
@@ -220,7 +220,7 @@
               <label
                 for="title"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Title</label
+                >Title<span class="text-gray-400">(Optional)</span></label
               >
               <input
                 v-model="title"
@@ -233,14 +233,14 @@
               <label
                 for="paragraph"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Paragraph</label
+                >Paragraph<span class="text-gray-400"> (Input "|" for newline)</span></label
               >
-              <input
+              <textarea
                 v-model="paragraph"
                 type="text"
                 id="paragraph"
                 class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              />
+              ></textarea>
             </div>
             <div class="text-green-400 mt-2">
               <h1>{{ updateMessage }}</h1>
@@ -330,7 +330,7 @@ export default {
 
         setTimeout(() => {
           window.location.reload();
-        }, 4000);
+        }, 1500);
       } catch (error) {
         console.error("Error searching:", error);
       }

@@ -107,14 +107,14 @@
         <label
           for="paragraph"
           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Paragraph <span class="text-gray-400">(Optional)</span></label
+          >Paragraph <span class="text-gray-400">(Insert "|" for newline )</span></label
         >
-        <input
+        <textarea
           v-model="paragraph"
           type="text"
           id="paragraph"
           class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        />
+        ></textarea>
       </div>
       <div class="text-green-400 mt-2">
         <h1>{{ publishMessage }}</h1>
