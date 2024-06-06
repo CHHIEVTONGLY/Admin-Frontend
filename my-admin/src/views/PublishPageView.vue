@@ -107,7 +107,8 @@
         <label
           for="paragraph"
           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Paragraph <span class="text-gray-400">(Insert "|" for newline )</span></label
+          >Paragraph
+          <span class="text-gray-400">(Insert "|" for newline )</span></label
         >
         <textarea
           v-model="paragraph"
@@ -172,6 +173,7 @@ export default {
             }
           );
           this.publishMessage = `Publish successfully : ${response.data}`;
+          this.resetParagraph();
         } catch (e) {
           console.error("Error ", e.message);
           this.updateMessage = "Error publishing news. Please try again later.";
@@ -188,6 +190,7 @@ export default {
             }
           );
           this.publishMessage = `Publish successfully : ${response.data}`;
+          this.resetParagraph();
         } catch (e) {
           console.error("Error ", e.message);
           this.updateMessage = "Error publishing news. Please try again later.";
@@ -195,6 +198,11 @@ export default {
       } else {
         this.publishMessage = "Error publishing news. Please try again later.";
       }
+    },
+    resetParagraph() {
+      this.title = "";
+      this.paragraph = "";
+      this.imgUrl = "";
     },
   },
 };
